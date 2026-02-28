@@ -17,5 +17,11 @@ deploy-nginx:
 
 destroy_toys:
   stage: destroy
+  image:
+   name: bitnami/kubectl:latest
+   entrypoint: [""]
+  variables:
+    KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
+ 
   script:
     - kubectl delete -f k8s/nginx.yaml
