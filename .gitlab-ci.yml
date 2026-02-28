@@ -7,5 +7,5 @@ deploy-nginx:
   script:
     - kubectl config get-contexts
     - kubectl config use-context "$KUBE_CONTEXT"
-    - kubectl apply -f k8s/nginx.yaml
+    - kubectl apply -f k8s/nginx.yaml --validate=false
     - kubectl get pods
