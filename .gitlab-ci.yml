@@ -10,18 +10,18 @@ deploy-nginx:
   variables:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
-    - kubectl config get-contexts
     - kubectl config use-context "$KUBE_CONTEXT"
     - kubectl apply -f k8s/nginx.yaml --validate=false
     - kubectl get pods
 
-destroy_toys:
+destroy-nginx:
   stage: destroy
   image:
-   name: bitnami/kubectl:latest
-   entrypoint: [""]
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
   variables:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
- 
   script:
+    - kubectl config use-context "$KUBE_CONTEXT"
     - kubectl delete -f k8s/nginx.yaml
+  when: manual
