@@ -1,4 +1,9 @@
+stages:
+  - build
+  - destroy
+
 deploy-nginx:
+  stage: build
   image:
     name: bitnami/kubectl:latest
     entrypoint: [""]
@@ -9,3 +14,8 @@ deploy-nginx:
     - kubectl config use-context "$KUBE_CONTEXT"
     - kubectl apply -f k8s/nginx.yaml --validate=false
     - kubectl get pods
+
+destroy_toys:
+  stage: destroy
+  script:
+    - kubectl delete -f k8s/nginx.yaml
