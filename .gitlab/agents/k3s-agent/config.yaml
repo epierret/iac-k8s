@@ -1,3 +1,3 @@
 ci_access:
   projects:
-    - id: pierret/kubernetes-test
+    - id: learning-test2/kubernetes-test
