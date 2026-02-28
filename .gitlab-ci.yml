@@ -3,8 +3,9 @@ deploy-nginx:
     name: bitnami/kubectl:latest
     entrypoint: [""]
   variables:
-    KUBE_CONTEXT: learning-test2/Kubernetes-test:k3s-agent
+    KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
+    - kubectl config get-contexts
     - kubectl config use-context "$KUBE_CONTEXT"
     - kubectl apply -f k8s/nginx.yaml
     - kubectl get pods
