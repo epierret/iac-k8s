@@ -25,3 +25,6 @@ destroy-nginx:
     - kubectl config use-context "$KUBE_CONTEXT"
     - kubectl delete -f k8s/nginx.yaml
   when: manual
+
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
