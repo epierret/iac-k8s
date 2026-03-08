@@ -1,6 +1,8 @@
 stages:
   - build
   - destroy
+  - success
+  - pdf
 
 deploy-nginx:
   stage: build
@@ -11,6 +13,7 @@ deploy-nginx:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
     - kubectl config use-context "$KUBE_CONTEXT"
+    - kubectl create ns test-deploy || true
     - kubectl apply -f k8s/nginx.yaml --validate=false
     - kubectl get pods
 
@@ -28,3 +31,19 @@ destroy-nginx:
 
 include:
   - template: Jobs/SAST.gitlab-ci.yml
+
+success-job:
+  stage: success
+  script:
+    - echo "ce test est une reussite" > coco.txt
+  artifacts:
+    paths:
+      - coco.txt
+
+pdf:
+  stage: pdf
+  script:
+    - echo "generating pdf..."
+  artifacts:
+    paths:
+      - my_goal.pdf
