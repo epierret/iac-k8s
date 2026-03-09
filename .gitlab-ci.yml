@@ -25,20 +25,12 @@ setup-nginx:
   variables:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
+    - chmod 600 $KUBECONFIG
     - kubectl config use-context "$KUBE_CONTEXT"
-   # 1. Gateway API CRDs
-    - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml
-    
-    # 2. NGINX Gateway Fabric CRDs (obligatoire avant helm)
-    - kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-gateway-fabric/v1.5.1/deploy/crds.yaml
-    
-    # 3. Attendre que les CRDs soient prêtes
+    - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml --validate=false
+    - kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-gateway-fabric/v1.5.1/deploy/crds.yaml --validate=false
     - kubectl wait --for=condition=Established crd/nginxgateways.gateway.nginx.org --timeout=60s
-    
-    # 4. Installer/upgrader Helm
-    - helm upgrade --install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric \
-        --create-namespace \
-        -n nginx-gateway
+    - helm upgrade --install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway
 
 expose-nginx:
   stage: expose
@@ -50,7 +42,7 @@ expose-nginx:
   script:
     - kubectl config use-context "$KUBE_CONTEXT"
     - kubectl apply -f k8s/gateway.yaml
-    - kubectl expose deployment nginx-ci --name ci-svc --port 80 --target-port 80
+    - kubectl expose deployment nginx-ci --name ci-svc --port 80 --target-port 80 --dry-run=client -o yaml | kubectl apply -f -
     - kubectl get gateway
     - kubectl get httproute
 
@@ -62,6 +54,7 @@ verification:
     NODE_PORT: "31325"
   script:
     - echo "Testing Gateway API routing..."
+    - curl -f -H "Host: deployci.com" http://$NODE_IP:$NODE_PORT
     - echo "Test reussi !"
 
 pdf:
@@ -72,6 +65,7 @@ pdf:
     NODE_PORT: "31325"
   script:
     - echo "generating file..."
+    - curl -f -H "Host: deployci.com" http://$NODE_IP:$NODE_PORT >> my_goal.txt
   artifacts:
     paths:
       - my_goal.txt
