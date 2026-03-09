@@ -3,7 +3,7 @@ stages:
   - setup
   - expose
   - verification
-  - pdf
+  - file
 
 deploy-nginx:
   stage: build
@@ -49,17 +49,23 @@ expose-nginx:
 verification:
   stage: verification
   image: curlimages/curl:latest
+  variables:
+    NODE_IP: "192.168.1.48"
+    NODE_PORT: "31325"
   script:
-    - export NODE_IP= "192.168.1.48"
-    - export NODE_PORT= "31325"
     - echo "Testing Gateway API routing..."
     - curl -f -H "Host: deployci.com" http://$NODE_IP:$NODE_PORT
     - echo "Test reussi !"
 
 pdf:
-  stage: pdf
+  stage: file
+  image: curlimages/curl:latest
+  variables:
+    NODE_IP: "192.168.1.48"
+    NODE_PORT: "31325"
   script:
-    - echo "generating pdf..."
+    - echo "generating file..."
+    - curl -f -H "Host: deployci.com" http://$NODE_IP:$NODE_PORT >> my_goal.txt
   artifacts:
     paths:
-      - my_goal.pdf
+      - my_goal.txt
