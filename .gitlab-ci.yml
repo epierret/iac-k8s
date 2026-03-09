@@ -1,7 +1,8 @@
 stages:
   - build
-  - destroy
-  - success
+  - setup
+  - expose
+  - verification
   - pdf
 
 deploy-nginx:
@@ -13,12 +14,26 @@ deploy-nginx:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
     - kubectl config use-context "$KUBE_CONTEXT"
-    - kubectl create ns test-deploy || true
     - kubectl apply -f k8s/nginx.yaml --validate=false
     - kubectl get pods
 
-destroy-nginx:
-  stage: destroy
+setup-nginx:
+  stage: setup
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
+  variables:
+    KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
+  script:
+    - echo -e "disable:\n  - traefik" | sudo tee -a /etc/rancher/k3s/config.yaml
+    - sudo systemctl restart k3s
+    - cat /etc/rancher/k3s/config.yaml
+    - kubectl config use-context "$KUBE_CONTEXT"
+    - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml
+    - helm install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway
+
+expose-nginx:
+  stage: expose
   image:
     name: bitnami/kubectl:latest
     entrypoint: [""]
@@ -26,18 +41,20 @@ destroy-nginx:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
     - kubectl config use-context "$KUBE_CONTEXT"
-    - kubectl delete -f k8s/nginx.yaml
-  when: manual
+    - kubectl apply -f k8s/gateway.yaml
+    - kubectl expose deployment nginx-ci --name ci-svc --port 80 --target-port 80
+    - kubectl get gateway
+    - kubectl get httproute
 
-
-
-success-job:
-  stage: success
+verification:
+  stage: verification
+  image: curlimages/curl:latest
   script:
-    - echo "ce test est une reussite" > coco.txt
-  artifacts:
-    paths:
-      - coco.txt
+    - NODE_IP=192.168.1.48
+    - NODE_PORT=31325
+    - echo "Testing Gateway API routing..."
+    - curl -f -H "Host: deployci.com" http://$NODE_IP:$NODE_PORT
+    - echo "Test reussi !"
 
 pdf:
   stage: pdf
