@@ -50,8 +50,8 @@ verification:
   stage: verification
   image: curlimages/curl:latest
   script:
-    - NODE_IP : "192.168.1.48"
-    - NODE_PORT : "31325"
+    - export NODE_IP= "192.168.1.48"
+    - export NODE_PORT= "31325"
     - echo "Testing Gateway API routing..."
     - curl -f -H "Host: deployci.com" http://$NODE_IP:$NODE_PORT
     - echo "Test reussi !"
