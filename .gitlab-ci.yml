@@ -4,6 +4,7 @@ stages:
   - expose
   - verification
   - file
+  - mirror
 
 deploy-nginx:
   stage: build
@@ -67,7 +68,7 @@ pdf:
   artifacts:
     paths:
       - my_goal.txt
-      
+
 mirror-to-github:
   stage: mirror
   image: alpine/git:latest
