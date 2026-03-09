@@ -25,7 +25,7 @@ setup-nginx:
   variables:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
-   
+    - kubectl config use-context "$KUBE_CONTEXT"
    # 1. Gateway API CRDs
     - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml
     
