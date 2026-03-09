@@ -28,7 +28,7 @@ setup-nginx:
    
     - kubectl config use-context "$KUBE_CONTEXT"
     - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml
-    - helm install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway
+    - helm upgrade --install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway
 
 expose-nginx:
   stage: expose
