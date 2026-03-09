@@ -20,12 +20,12 @@ deploy-nginx:
 setup-nginx:
   stage: setup
   image:
-    name: bitnami/kubectl:latest
+    name: alpine/k8s:1.29.2
     entrypoint: [""]
   variables:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
-    - echo -e "disable:\n  - traefik" | sudo tee -a /etc/rancher/k3s/config.yaml
+    - echo -e "disable:\n  - traefik" |  tee -a /etc/rancher/k3s/config.yaml
     - sudo systemctl restart k3s
     - cat /etc/rancher/k3s/config.yaml
     - kubectl config use-context "$KUBE_CONTEXT"
