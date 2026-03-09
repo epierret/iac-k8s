@@ -26,9 +26,19 @@ setup-nginx:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
    
-    - kubectl config use-context "$KUBE_CONTEXT"
+   # 1. Gateway API CRDs
     - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml
-    - helm upgrade --install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric --create-namespace -n nginx-gateway
+    
+    # 2. NGINX Gateway Fabric CRDs (obligatoire avant helm)
+    - kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-gateway-fabric/v1.5.1/deploy/crds.yaml
+    
+    # 3. Attendre que les CRDs soient prêtes
+    - kubectl wait --for=condition=Established crd/nginxgateways.gateway.nginx.org --timeout=60s
+    
+    # 4. Installer/upgrader Helm
+    - helm upgrade --install ngf oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric \
+        --create-namespace \
+        -n nginx-gateway
 
 expose-nginx:
   stage: expose
