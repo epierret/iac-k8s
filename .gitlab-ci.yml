@@ -79,8 +79,10 @@ mirror-to-github:
     GIT_DEPTH: 0          # fetch tout l'historique, pas juste le dernier commit
   script:
     - apk add --no-cache git
-    - git fetch --unshallow 2>/dev/null || true
+    - git branch -a          # quelles branches sont dispo
+    - git log --oneline -5   # y a-t-il des commits
     - git fetch --all
     - git remote add github https://epierret:$GITHUB_TOKEN@github.com/epierret/iac-k8s.git
     - git push github --all
     - git push github --tags
+    - git remote -v          # confirme les remotes
