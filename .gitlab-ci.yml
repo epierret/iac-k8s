@@ -67,3 +67,10 @@ pdf:
   artifacts:
     paths:
       - my_goal.txt
+      
+mirror-to-github:
+  stage: mirror
+  image: alpine/git:latest
+  script:
+    - git remote add github https://epierret:$GITHUB_TOKEN@github.com/epierret/iac-k8s.git
+    - git push --mirror github
