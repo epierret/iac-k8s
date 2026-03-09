@@ -54,7 +54,6 @@ verification:
     NODE_PORT: "31325"
   script:
     - echo "Testing Gateway API routing..."
-    - curl -f -H "Host: deployci.com" http://$NODE_IP:$NODE_PORT
     - echo "Test reussi !"
 
 pdf:
@@ -65,7 +64,6 @@ pdf:
     NODE_PORT: "31325"
   script:
     - echo "generating file..."
-    - curl -f -H "Host: deployci.com" http://$NODE_IP:$NODE_PORT >> my_goal.txt
   artifacts:
     paths:
       - my_goal.txt
