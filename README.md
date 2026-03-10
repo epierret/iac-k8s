@@ -18,9 +18,11 @@ Developer → GitLab Repository → CI/CD Pipeline → GitLab Kubernetes Agent �
 
 ---
 
-### 3. Optional (very good for DevOps portfolios)
+#
 
-Add a **short explanation under the image**:
+
+
+ **short explanation under the image**:
 
 ```markdown
 The pipeline builds a container image, runs tests, and deploys to a local
