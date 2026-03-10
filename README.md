@@ -6,23 +6,12 @@ Personal lab project demonstrating an end-to-end GitLab CI/CD pipeline deploying
 
 📊 Architecture Overview
 
-This diagram illustrates the full deployment workflow:
+![GitLab CI/CD k3s Architecture](docs/images/gitlab-k3s-architecture.png)
 
-Developer
-   │
-   ▼
-GitLab Repository
-   │
-   ▼
-GitLab CI/CD Pipeline
-   │
-   ▼
-GitLab Kubernetes Agent (agentk)
-   │
-   ▼
-Local k3s Kubernetes Cluster
 
-https://gitlab.com/pierretenrique/kubernetes-test/-/blob/29e36449d99b9e8d6e32c0762fd98b48731ebc0c/Docs/Images/gitlab-k3s-architecture.png
+
+
+
 
 
 📐 Architecture Explanation
