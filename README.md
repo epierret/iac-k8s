@@ -12,7 +12,7 @@ pipelines, configurations, and infrastructure may be **broken, rebuilt, and rede
 
 ## 📊 Architecture Overview
 
-![GitLab CI/CD k3s Architecture](docs/Images/gitlab-k3s-architecture.png)
+![GitLab CI/CD k3s Architecture](Docs/Images/gitlab-k3s-architecture.png)
 
 ---
 
