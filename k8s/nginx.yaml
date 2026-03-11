@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-test-sucess
+  name: nginx-test-cm
   namespace: default
 spec:
   replicas: 1
