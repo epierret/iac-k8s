@@ -27,7 +27,7 @@ spec:
               mountPath: /etc/nginx/conf.d/stub_status.conf
               subPath: stub_status.conf
 
-        - name: nginx-exporter          # ← c'est ça qui manque
+        - name: nginx-exporter          
           image: nginx/nginx-prometheus-exporter:latest
           args:
             - --nginx.scrape-uri=http://localhost:8080/stub_status
