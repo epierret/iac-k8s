@@ -18,3 +18,11 @@ spec:
           image: nginx:latest
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: nginx-stub-status
+              mountPath: /etc/nginx/conf.d/stub_status.conf
+              subPath: stub_status.conf
+      volumes:
+        - name: nginx-stub-status
+          configmap:
+            name: nginx-stub-status
