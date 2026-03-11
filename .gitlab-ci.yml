@@ -48,6 +48,7 @@ expose-nginx:
   
     - kubectl apply -f k8s/deployment.yaml    # doit contenir le volumeMount
     - kubectl apply -f k8s/service.yaml
+    - kubectl apply -f k8s/service_monitor.yaml
     - kubectl apply -f k8s/gateway.yaml
     
   
