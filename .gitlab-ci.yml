@@ -43,10 +43,10 @@ expose-nginx:
   script:
     - kubectl config use-context "$KUBE_CONTEXT"
   
-      # idempotent - ne plante pas si le CM existe déjà
+    
     - kubectl create configmap nginx-stub-status --from-file=k8s/stub_status.conf --namespace default --dry-run=client -o yaml | kubectl apply -f -
   
-    - kubectl apply -f k8s/deployment.yaml    # doit contenir le volumeMount
+    - kubectl apply -f k8s/deployment.yaml   
     - kubectl apply -f k8s/service.yaml
     - kubectl apply -f k8s/service_monitor.yaml
     - kubectl apply -f k8s/gateway.yaml
