@@ -24,5 +24,5 @@ spec:
               subPath: stub_status.conf
       volumes:
         - name: nginx-stub-status
-          configmap:
+          configMap:
             name: nginx-stub-status
