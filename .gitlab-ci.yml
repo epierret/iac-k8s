@@ -56,7 +56,7 @@ verification:
     NODE_PORT: "31325"
   script:
     - echo "Testing Gateway API routing..."
-    - echo "Test reussi !"
+    - echo "Test reussi with the cm !"
 
 pdf:
   stage: file
