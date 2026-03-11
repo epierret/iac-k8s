@@ -15,7 +15,7 @@ deploy-nginx:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
     - kubectl config use-context "$KUBE_CONTEXT"
-    - kubectl apply -f k8s/nginx.yaml --validate=false
+    - kubectl apply -f k8s/deployment.yaml --validate=false
     - kubectl get pods
 
 setup-nginx:
