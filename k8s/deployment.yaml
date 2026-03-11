@@ -7,12 +7,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: nginx-ci
   template:
     metadata:
       labels:
-        app: nginx
+        app: nginx-ci
     spec:
+      volumes:
+        - name: nginx-stub-status
+          configMap:
+            name: nginx-stub-status
       containers:
         - name: nginx
           image: nginx:latest
@@ -22,11 +26,8 @@ spec:
             - name: nginx-stub-status
               mountPath: /etc/nginx/conf.d/stub_status.conf
               subPath: stub_status.conf
-      volumes:
-        - name: nginx-stub-status
-          configMap:
-            name: nginx-stub-status
-        - name: nginx-exporter         
+
+        - name: nginx-exporter          # ← c'est ça qui manque
           image: nginx/nginx-prometheus-exporter:latest
           args:
             - --nginx.scrape-uri=http://localhost:8080/stub_status
