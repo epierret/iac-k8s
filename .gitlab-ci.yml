@@ -4,7 +4,7 @@ stages:
   - expose
   - verification
   - file
-  - mirror
+  
 
 deploy-nginx:
   stage: build
@@ -69,21 +69,3 @@ pdf:
   artifacts:
     paths:
       - my_goal.txt
-
-mirror-to-github:
-  stage: mirror
-  image:
-    name: alpine:latest
-    entrypoint: [""]
-  variables:
-    GIT_STRATEGY: clone
-    GIT_DEPTH: 0          # fetch tout l'historique, pas juste le dernier commit
-  script:
-    - apk add --no-cache git
-    - git branch -a          # quelles branches sont dispo
-    - git log --oneline -5   # y a-t-il des commits
-    - git fetch --all
-    - git remote add github https://epierret:$GITHUB_TOKEN@github.com/epierret/iac-k8s.git
-    - git push github --all
-    - git push github --tags
-    - git remote -v          # confirme les remotes
