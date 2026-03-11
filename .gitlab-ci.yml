@@ -48,11 +48,7 @@ expose-nginx:
   
     - kubectl apply -f k8s/deployment.yaml    # doit contenir le volumeMount
     - kubectl apply -f k8s/gateway.yaml
-    - kubectl expose deployment nginx-ci \
-      --name ci-svc \
-      --port 80 \
-      --target-port 80 \
-      --dry-run=client -o yaml | kubectl apply -f -
+    - kubectl expose deployment nginx-ci --name ci-svc --port 80 --target-port 80 --dry-run=client -o yaml | kubectl apply -f -
   
     - kubectl get gateway
     - kubectl get httproute
