@@ -42,9 +42,18 @@ expose-nginx:
     KUBE_CONTEXT: pierretenrique/kubernetes-test:k3s-agent
   script:
     - kubectl config use-context "$KUBE_CONTEXT"
-    - kubectl create configmap nginx-stub-status --from-file=k8s/stub_status.conf
+  
+      # idempotent - ne plante pas si le CM existe déjà
+    - kubectl create configmap nginx-stub-status --from-file=k8s/stub_status.conf --namespace default --dry-run=client -o yaml | kubectl apply -f -
+  
+    - kubectl apply -f k8s/deployment.yaml    # doit contenir le volumeMount
     - kubectl apply -f k8s/gateway.yaml
-    - kubectl expose deployment nginx-ci --name ci-svc --port 80 --target-port 80 --dry-run=client -o yaml | kubectl apply -f -
+    - kubectl expose deployment nginx-ci \
+      --name ci-svc \
+      --port 80 \
+      --target-port 80 \
+      --dry-run=client -o yaml | kubectl apply -f -
+  
     - kubectl get gateway
     - kubectl get httproute
 
