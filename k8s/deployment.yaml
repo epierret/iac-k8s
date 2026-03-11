@@ -26,3 +26,9 @@ spec:
         - name: nginx-stub-status
           configMap:
             name: nginx-stub-status
+        - name: nginx-exporter          # ← c'est ça qui manque
+          image: nginx/nginx-prometheus-exporter:latest
+          args:
+            - --nginx.scrape-uri=http://localhost:8080/stub_status
+          ports:
+            - containerPort: 9113
